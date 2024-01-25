@@ -164,7 +164,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `végsőpont2`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `végsőpont2`  AS SELECT `screening`.`nev` AS `nev`, sum(`ertekelesek`.`pontertek` * `szempont`.`szorzo`) AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`)) GROUP BY `screening`.`nev``nev`  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `végsőpont2`  AS SELECT `screening`.`nev` AS `nev`, sum(`ertekelesek`.`pontertek` * `szempont`.`szorzo`) AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`)) GROUP BY `screening`.`nev` ;
 
 --
 -- Indexek a kiírt táblákhoz
