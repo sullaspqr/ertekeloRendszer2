@@ -136,7 +136,7 @@ CREATE TABLE `végsőpont` (
 --
 CREATE TABLE `végsőpont2` (
 `nev` varchar(255)
-,`végső pont` decimal(42,0)
+,`Végsőpont1` decimal(42,0)
 );
 
 -- --------------------------------------------------------
