@@ -8,6 +8,4 @@ public partial class Screening
     public int Id { get; set; }
 
     public string Nev { get; set; } = null!;
-
-    public virtual ICollection<Ertekelesek> Ertekeleseks { get; } = new List<Ertekelesek>();
 }

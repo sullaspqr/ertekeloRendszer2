@@ -7,5 +7,5 @@ public partial class Végsőpont2
 {
     public string Nev { get; set; } = null!;
 
-    public decimal? VégsőPont1 { get; set; }
+    public decimal? VégsőPont { get; set; }
 }

@@ -23,22 +23,19 @@ public partial class ErtekeloRendszerContext : DbContext
 
     public virtual DbSet<Szempont> Szemponts { get; set; }
 
-    public virtual DbSet<Végsőpont2> Végsőponts { get; set; }
+    public virtual DbSet<Végsőpont2> Végsőpont2s { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySQL("server=localhost;database=ertekelo-rendszer;user=root;password=;ssl mode=none;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Ertekelesek>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("ertekelesek");
-
-            entity.HasIndex(e => e.ScreeningId, "screening_id");
-
-            entity.HasIndex(e => e.SzempontId, "szempont_id");
+            entity
+                .HasNoKey()
+                .ToTable("ertekelesek");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -52,14 +49,6 @@ public partial class ErtekeloRendszerContext : DbContext
             entity.Property(e => e.SzempontId)
                 .HasColumnType("int(11)")
                 .HasColumnName("szempont_id");
-
-            entity.HasOne(d => d.Screening).WithMany(p => p.Ertekeleseks)
-                .HasForeignKey(d => d.ScreeningId)
-                .HasConstraintName("ertekelesek_ibfk_1");
-
-            entity.HasOne(d => d.Szempont).WithMany(p => p.Ertekeleseks)
-                .HasForeignKey(d => d.SzempontId)
-                .HasConstraintName("ertekelesek_ibfk_2");
         });
 
         modelBuilder.Entity<Getter>(entity =>
@@ -87,9 +76,9 @@ public partial class ErtekeloRendszerContext : DbContext
 
         modelBuilder.Entity<Screening>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("screening");
+            entity
+                .HasNoKey()
+                .ToTable("screening");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -101,9 +90,9 @@ public partial class ErtekeloRendszerContext : DbContext
 
         modelBuilder.Entity<Szempont>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("szempont");
+            entity
+                .HasNoKey()
+                .ToTable("szempont");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -125,10 +114,10 @@ public partial class ErtekeloRendszerContext : DbContext
             entity.Property(e => e.Nev)
                 .HasMaxLength(255)
                 .HasColumnName("nev");
-            entity.Property(e => e.VégsőPont1)
+            entity.Property(e => e.VégsőPont)
                 .HasPrecision(42)
                 .HasDefaultValueSql("'NULL'")
-                .HasColumnName("Végsőpont1");
+                .HasColumnName("végső pont");
         });
 
         OnModelCreatingPartial(modelBuilder);

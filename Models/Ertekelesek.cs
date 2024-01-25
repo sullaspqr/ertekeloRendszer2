@@ -12,8 +12,4 @@ public partial class Ertekelesek
     public int SzempontId { get; set; }
 
     public int Pontertek { get; set; }
-
-    public virtual Screening Screening { get; set; } = null!;
-
-    public virtual Szempont Szempont { get; set; } = null!;
 }

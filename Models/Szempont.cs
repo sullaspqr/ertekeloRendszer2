@@ -10,6 +10,4 @@ public partial class Szempont
     public string SzempontNev { get; set; } = null!;
 
     public int Szorzo { get; set; }
-
-    public virtual ICollection<Ertekelesek> Ertekeleseks { get; } = new List<Ertekelesek>();
 }
