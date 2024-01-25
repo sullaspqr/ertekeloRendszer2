@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Már 10. 09:24
--- Kiszolgáló verziója: 10.4.24-MariaDB
--- PHP verzió: 8.1.6
+-- Létrehozás ideje: 2024. Jan 25. 09:49
+-- Kiszolgáló verziója: 10.4.32-MariaDB
+-- PHP verzió: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,7 +32,7 @@ CREATE TABLE `ertekelesek` (
   `screening_id` int(11) NOT NULL,
   `szempont_id` int(11) NOT NULL,
   `pontertek` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `ertekelesek`
@@ -78,7 +78,7 @@ CREATE TABLE `getter` (
 CREATE TABLE `screening` (
   `id` int(11) NOT NULL,
   `nev` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `screening`
@@ -99,7 +99,7 @@ CREATE TABLE `szempont` (
   `id` int(11) NOT NULL,
   `szempont-nev` varchar(255) NOT NULL,
   `szorzo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `szempont`
@@ -125,7 +125,7 @@ INSERT INTO `szempont` (`id`, `szempont-nev`, `szorzo`) VALUES
 --
 CREATE TABLE `végsőpont2` (
 `nev` varchar(255)
-,`Végsőpont1` decimal(42,0)
+,`végső pont` decimal(42,0)
 );
 
 -- --------------------------------------------------------
@@ -135,7 +135,7 @@ CREATE TABLE `végsőpont2` (
 --
 DROP TABLE IF EXISTS `getter`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `getter`  AS SELECT `screening`.`nev` AS `nev`, `ertekelesek`.`pontertek` AS `pontertek`, `szempont`.`szorzo` AS `szorzo`, `szempont`.`szempont-nev` AS `szempont-nev`, `ertekelesek`.`pontertek`* `szempont`.`szorzo` AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `getter`  AS SELECT `screening`.`nev` AS `nev`, `ertekelesek`.`pontertek` AS `pontertek`, `szempont`.`szorzo` AS `szorzo`, `szempont`.`szempont-nev` AS `szempont-nev`, `ertekelesek`.`pontertek`* `szempont`.`szorzo` AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`)) ;
 
 -- --------------------------------------------------------
 
@@ -145,58 +145,6 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `végsőpont2`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `végsőpont2`  AS SELECT `screening`.`nev` AS `nev`, sum(`ertekelesek`.`pontertek` * `szempont`.`szorzo`) AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`)) GROUP BY `screening`.`nev` ;
-
---
--- Indexek a kiírt táblákhoz
---
-
---
--- A tábla indexei `ertekelesek`
---
-ALTER TABLE `ertekelesek`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `screening_id_2` (`screening_id`,`szempont_id`),
-  ADD KEY `szempont_id` (`szempont_id`),
-  ADD KEY `screening_id` (`screening_id`);
-
---
--- A tábla indexei `screening`
---
-ALTER TABLE `screening`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `szempont`
---
-ALTER TABLE `szempont`
-  ADD PRIMARY KEY (`id`);
-
---
--- A kiírt táblák AUTO_INCREMENT értéke
---
-
---
--- AUTO_INCREMENT a táblához `ertekelesek`
---
-ALTER TABLE `ertekelesek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT a táblához `screening`
---
-ALTER TABLE `screening`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- Megkötések a kiírt táblákhoz
---
-
---
--- Megkötések a táblához `ertekelesek`
---
-ALTER TABLE `ertekelesek`
-  ADD CONSTRAINT `ertekelesek_ibfk_3` FOREIGN KEY (`screening_id`) REFERENCES `screening` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ertekelesek_ibfk_4` FOREIGN KEY (`szempont_id`) REFERENCES `szempont` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
