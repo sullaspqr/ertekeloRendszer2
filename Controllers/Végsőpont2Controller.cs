@@ -18,7 +18,7 @@ namespace ertekeloRendszer.Controllers
             {
                 try
                 {
-                    return Ok(context.Végsőponts.ToList());
+                    return Ok(context.Végsőpont2s.ToList());
                 }
                 catch (System.Exception ex)
                 {
