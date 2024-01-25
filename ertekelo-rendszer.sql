@@ -120,17 +120,6 @@ INSERT INTO `szempont` (`id`, `szempont-nev`, `szorzo`) VALUES
 -- --------------------------------------------------------
 
 --
--- A nézet helyettes szerkezete `végsőpont`
--- (Lásd alább az aktuális nézetet)
---
-CREATE TABLE `végsőpont` (
-`nev` varchar(255)
-,`végső pont` decimal(42,0)
-);
-
--- --------------------------------------------------------
-
---
 -- A nézet helyettes szerkezete `végsőpont2`
 -- (Lásd alább az aktuális nézetet)
 --
@@ -147,15 +136,6 @@ CREATE TABLE `végsőpont2` (
 DROP TABLE IF EXISTS `getter`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `getter`  AS SELECT `screening`.`nev` AS `nev`, `ertekelesek`.`pontertek` AS `pontertek`, `szempont`.`szorzo` AS `szorzo`, `szempont`.`szempont-nev` AS `szempont-nev`, `ertekelesek`.`pontertek`* `szempont`.`szorzo` AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`))  ;
-
--- --------------------------------------------------------
-
---
--- Nézet szerkezete `végsőpont`
---
-DROP TABLE IF EXISTS `végsőpont`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `végsőpont`  AS SELECT `screening`.`nev` AS `nev`, sum(`ertekelesek`.`pontertek` * `szempont`.`szorzo`) AS `végső pont` FROM ((`screening` join `ertekelesek` on(`screening`.`id` = `ertekelesek`.`screening_id`)) join `szempont` on(`szempont`.`id` = `ertekelesek`.`szempont_id`)) GROUP BY `screening`.`nev`;
 
 -- --------------------------------------------------------
 
